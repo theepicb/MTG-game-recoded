@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxe74xwn2cp0l"]
+
+[ext_resource type="Script" path="res://Global.gd" id="1_t81ty"]
+[ext_resource type="Script" path="res://Money_Clicker.gd" id="2_h06mc"]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_t81ty")
+
+[node name="Money_Clicker" type="Button" parent="."]
+offset_left = 175.0
+offset_top = 4.0
+offset_right = 247.0
+offset_bottom = 57.0
+script = ExtResource("2_h06mc")
