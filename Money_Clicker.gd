@@ -37,7 +37,7 @@ func _process(_delta):
 		pass 
 		position = Vector2(get_viewport_rect().size.x/2 - size.x/2, (get_viewport_rect().size.y/2) - (size.y /2))
 		# i am going insane
-		comboCounter.position = Vector2(position.x / 2 + 300, position.y / 2 - (comboCounter.size.y /2))
+		comboCounter.position = Vector2(position.x / 2 + 300, position.y / 2 - 50)
 		comboCounter.size = Vector2(50, 50)
 		print( get_viewport_rect().size)
 	pass
