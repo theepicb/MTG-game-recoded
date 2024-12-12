@@ -3,10 +3,10 @@ extends Button
 var clicks = 0;
 var counter = 0;
 var totalClicks = 0;
-# Creates new label for combo 
 
 func _ready():
 	size = Vector2(600, 220)
+	
 	pass 
 
 func _pressed():
@@ -15,6 +15,7 @@ func _pressed():
 	clicks = clicks + 1
 	counter = 0
 	totalClicks = totalClicks + 1
+	$"../Node2D".clickerCounter.call(totalClicks)
 	pass
 
 

@@ -1,14 +1,24 @@
-[gd_scene load_steps=5 format=3 uid="uid://bxe74xwn2cp0l"]
+[gd_scene load_steps=6 format=3 uid="uid://bxe74xwn2cp0l"]
 
-[ext_resource type="Script" path="res://Global.gd" id="1_t81ty"]
+[ext_resource type="Script" path="res://Achievement_handler.gd" id="1_iwyy1"]
 [ext_resource type="Script" path="res://Money_Clicker.gd" id="2_h06mc"]
 [ext_resource type="Script" path="res://Combo_Counter.gd" id="3_mjmix"]
 [ext_resource type="Script" path="res://upgrades.gd" id="4_bhogv"]
+[ext_resource type="Script" path="res://Clickscreen.gd" id="5_st0d8"]
 
 [node name="Node2D" type="Node2D"]
-script = ExtResource("1_t81ty")
+script = ExtResource("1_iwyy1")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Node2D" type="Node2D" parent="CanvasLayer"]
+script = ExtResource("1_iwyy1")
+
+[node name="Clickscreen" type="Button" parent="CanvasLayer"]
+offset_right = 72.0
+offset_bottom = 31.0
+text = "Click"
+script = ExtResource("5_st0d8")
 
 [node name="Money_Clicker" type="Button" parent="CanvasLayer"]
 offset_left = 200.0

@@ -3,6 +3,7 @@ extends Button
 func _ready():
 	size = Vector2(200, 60)
 	position.y = 60
+	text = "upgrades"
 	pass
 
 var i = 0
@@ -20,10 +21,8 @@ func createButton():
 			i = float(Global._upgradesUnlocked[x])
 			var button = Button.new()
 			button.pressed.connect(self._button_pressed.bind(float(x), float(i)))
-			button.position.y = 20 + x * 70
-			button.position.x = 210
-			button.size.x = 700
-			button.size.y = 65
+			button.position = Vector2(210, 20 + x * 70)
+			button.size = Vector2(700, 65)
 			add_child(button)
 			var label = Label.new()
 			label.text = Global._upgrades[i].name
@@ -32,13 +31,11 @@ func createButton():
 			add_child(label)
 			var labeldes = Label.new()
 			labeldes.text = str(Global._upgrades[i].des)
-			labeldes.position.y = 50 + x * 70
-			labeldes.position.x = 230
+			labeldes.position = Vector2(230, 50 + x * 70)
 			add_child(labeldes)
 			var price = Label.new()
 			price.text = "$" +  str(Global._upgrades[i].price)
-			price.position.y = 42 + x * 70
-			price.position.x = 800
+			price.position = Vector2(42 + x * 70, 800)
 			add_child(price)
 			print("button made", x, i)
 			x = x + 1
@@ -47,13 +44,13 @@ func createButton():
 	pass
 
 func _button_pressed(x, i):
-	if float(Global._money) >= float(Global._upgradesPrice[i]):
+	if float(Global._money) >= float(Global._upgrades[i].price):
+		Global._money = float(Global._money) - float(Global._upgrades[i].price)
 		if i == 0:
-			Global._money = float(Global._money) - float(Global._upgradesPrice[i])
 			Global._moneyClick = float(Global._moneyClick) + 0.01
 			pass
 		if i == 1:
-			Global._money = float(Global._money) - float(Global._upgradesPrice[i])
+			
 			Global._automoney = float(Global._automoney) + 0.01
 			pass
 		if i == 2:
@@ -75,11 +72,15 @@ func _button_pressed(x, i):
 
 
 func _pressed():
-	$".".set_text("upgrades")
 	createButton.call()
 	print(Global._upgradesUnlocked.size(), Global._upgradesUnlocked)
+	text = "upgrades"
 	pass
 	
+var set_text = func (text) :
+	text = (str(text))
+	pass
+
 func deleteChild():
 	for child in $".".get_children():
 			child.queue_free()
