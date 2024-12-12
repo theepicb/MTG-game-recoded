@@ -9,10 +9,8 @@ var _moneyclickmulti = 1
 # money per second
 var _automoney = 0.00
 # list of upgrades values ect..
-var _upgrades = ["your first achievement... probably", "clicker upgrade", "unlocks march of the machine: aftermath epilogue packs!", "unlocks march of the machine: epilogue collector boosters!"]
-var _upgradeText = ["increases clicking by $0.01", "increases money gained per second by $0.01", "unlocks your first pack: March of the machine epilogue!", "unlocks the march of the machine: epilogue collector boosters for $40"]
-var _upgradesPrice = [0.1, 1, 2.00, 10]
-var _upgradesUnlocked = [1, 2]
+var _upgrades = [{"name": "your first achievement... probably", "des": "increases money gained per second by $0.01", "price": 0.1}, {"name": "clicker upgrade", "des": "increases clicking by $0.01", "price": 2}, {"name": "unlocks your first pack: March of the machine epilogue!", "des": "unlocks the march of the machine: epilogue collector boosters for $40", "price": 10}]
+
 # clicker combo values
 var _autotimer = 0
 var _totalclicks = 0
@@ -82,6 +80,6 @@ func _ready():
 	for i in range(_matPrice.size()) :
 		print(str(i) + " " + str(_matPrice[i]["nf"]))
 		pass
-		
+		print(_upgrades[0].name)
 
 	pass

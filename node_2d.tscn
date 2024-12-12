@@ -1,14 +1,35 @@
-[gd_scene load_steps=3 format=3 uid="uid://bxe74xwn2cp0l"]
+[gd_scene load_steps=5 format=3 uid="uid://bxe74xwn2cp0l"]
 
 [ext_resource type="Script" path="res://Global.gd" id="1_t81ty"]
 [ext_resource type="Script" path="res://Money_Clicker.gd" id="2_h06mc"]
+[ext_resource type="Script" path="res://Combo_Counter.gd" id="3_mjmix"]
+[ext_resource type="Script" path="res://upgrades.gd" id="4_bhogv"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_t81ty")
 
-[node name="Money_Clicker" type="Button" parent="."]
-offset_left = 175.0
-offset_top = 4.0
-offset_right = 247.0
-offset_bottom = 57.0
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Money_Clicker" type="Button" parent="CanvasLayer"]
+offset_left = 200.0
+offset_top = 70.0
+offset_right = 399.0
+offset_bottom = 170.0
 script = ExtResource("2_h06mc")
+
+[node name="Combo_Counter" type="Label" parent="CanvasLayer"]
+offset_left = 234.0
+offset_top = 108.0
+offset_right = 376.0
+offset_bottom = 155.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_mjmix")
+metadata/_edit_use_anchors_ = true
+
+[node name="upgrades" type="Button" parent="CanvasLayer"]
+offset_left = 1.0
+offset_top = 34.0
+offset_right = 72.0
+offset_bottom = 66.0
+script = ExtResource("4_bhogv")
