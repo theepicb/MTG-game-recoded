@@ -1,21 +1,21 @@
 extends Button
 # Counts amount of clicks
-var clicks = 0;
 var counter = 0;
 var totalClicks = 0;
-
+var clicks = 0
 func _ready():
 	size = Vector2(600, 220)
-	
+	getMoney()
 	pass 
+
 
 func _pressed():
 	# Math for combo 10 clicks = 1%
 	Global._money = Global._money + ((Global._moneyClick * Global._moneyclickmulti) * (1 + float(clicks) / 1000));
 	clicks = clicks + 1
 	counter = 0
-	totalClicks = totalClicks + 1
-	$"../Node2D".clickerCounter.call(totalClicks)
+	Global._clicksTotal = Global._clicksTotal + 1;
+	$"../Achievement_Handler".clickerCounter()
 	pass
 
 
@@ -25,6 +25,11 @@ func _process(delta):
 	position.y = get_viewport_rect().size.y/2 - $".".size.y/2 +10
 	pass
 
+func getMoney():
+	Global._money = Global._money + Global._automoney
+	await get_tree().create_timer(1.0).timeout
+	getMoney()
+	pass
 
 	
 func hidebutton():

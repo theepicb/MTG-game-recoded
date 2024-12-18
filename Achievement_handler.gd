@@ -1,12 +1,12 @@
 extends Node2D
 var upgrades = []
 
-var clickerCounter = func (clicks) :
+func clickerCounter () :
 	if upgrades.has(0) == false: 
-		if clicks == 10:
+		if Global._clicksTotal == 10:
 			upgrades.push_front(0)
 			Global._upgradesUnlocked.push_back(float(0))
-			$CanvasLayer/upgrades.set_text.call("upgrades*")
+			$"../upgrades".changeText("upgrades*")
 			showach(0)
 			pass
 		pass

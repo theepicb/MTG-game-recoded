@@ -2,7 +2,7 @@ extends Button
 
 func _ready():
 	size = Vector2(200, 60)
-	position.y = 60
+	position = Vector2(0, 60)
 	text = "upgrades"
 	pass
 
@@ -13,7 +13,7 @@ func createButton():
 	#$"../shopButton".deleteschild()
 	$"../Money_Clicker".visible = false
 	$"../Combo_Counter".visible = false
-	#$"../Button5".deleteschildren()
+	$"../ShopButton".deleteChild()
 	#$"../Button4".removeInv()
 	var x = 0
 	if float(Global._upgradesUnlocked.size()) != 0:
@@ -35,7 +35,7 @@ func createButton():
 			add_child(labeldes)
 			var price = Label.new()
 			price.text = "$" +  str(Global._upgrades[i].price)
-			price.position = Vector2(42 + x * 70, 800)
+			price.position = Vector2(800, 42 + x * 70)
 			add_child(price)
 			print("button made", x, i)
 			x = x + 1
@@ -47,11 +47,10 @@ func _button_pressed(x, i):
 	if float(Global._money) >= float(Global._upgrades[i].price):
 		Global._money = float(Global._money) - float(Global._upgrades[i].price)
 		if i == 0:
-			Global._moneyClick = float(Global._moneyClick) + 0.01
+			Global._automoney = float(Global._automoney) + 0.01
 			pass
 		if i == 1:
-			
-			Global._automoney = float(Global._automoney) + 0.01
+			Global._moneyClick = float(Global._moneyClick) + 0.01
 			pass
 		if i == 2:
 			#$"../Button5".makeVisible()
@@ -63,7 +62,6 @@ func _button_pressed(x, i):
 			
 		for child in $".".get_children():
 			child.queue_free()
-			print($".".get_children())
 			pass
 		Global._upgradesUnlocked.remove_at(x)
 		createButton()
@@ -77,8 +75,8 @@ func _pressed():
 	text = "upgrades"
 	pass
 	
-var set_text = func (text) :
-	text = (str(text))
+func changeText(text) :
+	set_text((str(text))) 
 	pass
 
 func deleteChild():

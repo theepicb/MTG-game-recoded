@@ -5,8 +5,8 @@ func _ready():
 	pass
 func _pressed():
 	$"../upgrades".deleteChild()
-	#$"../shopButton".deleteschild()
-	#$"../Button3".deleteChild.call()
+	$"../Packs_Inventory".deleteChild()
+	$"../ShopButton".deleteChild()
 	$"../Money_Clicker".visible = true
 	$"../Combo_Counter".visible = true
 	#$"../Button4".removeInv()

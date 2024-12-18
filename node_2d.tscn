@@ -1,33 +1,37 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxe74xwn2cp0l"]
+[gd_scene load_steps=12 format=3 uid="uid://bxe74xwn2cp0l"]
 
+[ext_resource type="Script" path="res://Global.gd" id="1_0iiay"]
 [ext_resource type="Script" path="res://Achievement_handler.gd" id="1_iwyy1"]
 [ext_resource type="Script" path="res://Money_Clicker.gd" id="2_h06mc"]
 [ext_resource type="Script" path="res://Combo_Counter.gd" id="3_mjmix"]
 [ext_resource type="Script" path="res://upgrades.gd" id="4_bhogv"]
 [ext_resource type="Script" path="res://Clickscreen.gd" id="5_st0d8"]
+[ext_resource type="Script" path="res://Packs_Inventory.gd" id="7_trdbr"]
+[ext_resource type="Script" path="res://ShopButton.gd" id="8_7qweo"]
+[ext_resource type="Script" path="res://Card_Handler.gd" id="9_uw7co"]
+[ext_resource type="Script" path="res://Inventory_handler.gd" id="10_ufuvg"]
+[ext_resource type="Script" path="res://Card_Inventory.gd" id="11_w1fti"]
 
 [node name="Node2D" type="Node2D"]
+script = ExtResource("1_0iiay")
+
+[node name="Achievement_Handler" type="Node2D" parent="."]
 script = ExtResource("1_iwyy1")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Node2D" type="Node2D" parent="CanvasLayer"]
-script = ExtResource("1_iwyy1")
-
-[node name="Clickscreen" type="Button" parent="CanvasLayer"]
+[node name="Clickscreen" type="Button" parent="."]
 offset_right = 72.0
 offset_bottom = 31.0
 text = "Click"
 script = ExtResource("5_st0d8")
 
-[node name="Money_Clicker" type="Button" parent="CanvasLayer"]
+[node name="Money_Clicker" type="Button" parent="."]
 offset_left = 200.0
 offset_top = 70.0
 offset_right = 399.0
 offset_bottom = 170.0
 script = ExtResource("2_h06mc")
 
-[node name="Combo_Counter" type="Label" parent="CanvasLayer"]
+[node name="Combo_Counter" type="Label" parent="."]
 offset_left = 234.0
 offset_top = 108.0
 offset_right = 376.0
@@ -37,9 +41,30 @@ grow_vertical = 2
 script = ExtResource("3_mjmix")
 metadata/_edit_use_anchors_ = true
 
-[node name="upgrades" type="Button" parent="CanvasLayer"]
+[node name="upgrades" type="Button" parent="."]
 offset_left = 1.0
 offset_top = 34.0
 offset_right = 72.0
 offset_bottom = 66.0
 script = ExtResource("4_bhogv")
+
+[node name="Packs_Inventory" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("7_trdbr")
+
+[node name="ShopButton" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("8_7qweo")
+
+[node name="Card_Handler" type="Sprite2D" parent="."]
+script = ExtResource("9_uw7co")
+
+[node name="Inventory_handler" type="Sprite2D" parent="."]
+script = ExtResource("10_ufuvg")
+
+[node name="Card_Inventory" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("11_w1fti")

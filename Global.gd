@@ -1,5 +1,6 @@
 extends Node2D
 # Holds useful variables and functions
+var _clicksTotal = 0
 # starting money
 var _money = 230.00
 # value per click
@@ -46,12 +47,11 @@ var _inv = []
 var _luck = 1
 var _addChance = 0
 
+
+
 # Called when the node enters the scene tree for the first time.
 func _process(delta):
-	_autotimer = _autotimer + 1
-	if _autotimer == 60:
-		_money = _money + _automoney
-		_autotimer = 0
+
 		pass
 
 # Level up function to be added
@@ -77,10 +77,11 @@ func dir_contents(path):
 	else:
 		print("An error occurred when trying to access the path.")
 		pass
-func _ready():
-	for i in range(_matPrice.size()) :
-		print(str(i) + " " + str(_matPrice[i]["nf"]))
-		pass
-		print(_upgrades[0].name)
 
+
+var onClick = func ():
+	
+	
+	
+	
 	pass
