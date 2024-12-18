@@ -13,4 +13,8 @@ func _ready():
 
 func _pressed():
 	$"../Inventory_handler".loadInv()
+	$"../Money_Clicker".visible = false
+	$"../Combo_Counter".visible = false
+	$"../ShopButton".deleteChild()
+	$"../Packs_Inventory".deleteChild()
 	pass

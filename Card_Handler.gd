@@ -2,13 +2,9 @@ extends Sprite2D
 
 var shader_material = preload("res://new_shader_material.tres")
 
-func itemPositionWithValue(key_to_check, value_to_check):
-	for i in range(Global._inv.size()):
-		var item = Global._inv[i]
-		if item.has(key_to_check) and item[key_to_check] == value_to_check:
-			return i
-	return -1
-	
+func getLuck (chance):
+	return randf_range(0, 100) * Global._luck >= chance
+
 func checkItem(set, foil, choice, priceSet, setName):
 	var card = {
 				"foil": foil,
@@ -26,27 +22,53 @@ func checkItem(set, foil, choice, priceSet, setName):
 	if foil == true :
 		card.id = str(set) + str(choice) + "f"
 		pass
-	var position = itemPositionWithValue("id", str(card.id))
 	$"../Inventory_handler".createCard(card, choice)
 	
 	pass
-	
+
+
+
 func openpack(x):
 	$"../Clickscreen".visible = false
 	$"../upgrades".visible = false
 	$"../Packs_Inventory".visible = false
 	$"../ShopButton".visible = false
 	#$"../ColorRect".visible = false
-	#$"../Button4".visible = false
+	$"../Card_Inventory".visible = false
+	var i = 0
 	if x == 0:
 		Global.dir_contents("res://sprites/motm-e/")
-		var i = 0
-		unicard(2, i, Global._matu, 100, Global._matPrice, "Matu")
+		
+		unicard(2, i, Global._matu, 0, Global._matPrice, "Matu")
+		i = 2
+		if getLuck(66) :
+			unicard(1, i, Global._matr, 0, Global._matPrice, "Matr")
+			i = 3
+		else:
+			unicard(1, i, Global._matm, 0, Global._matPrice, "Matm")
+			i = 3
+			pass
+		if getLuck(66):
+			unicard(1, i, Global._matm, 100, Global._matPrice, "Matm")
+		elif getLuck(66):
+			unicard(1, i, Global._matr, 100, Global._matPrice, "Matr")
+		else:
+			unicard(1, i, Global._matu, 100, Global._matPrice, "Matu")
+		
+		i = 4
+		if getLuck(66):
+			unicard(1, i, Global._matsm, 16, Global._matPrice, "Matsm")
+		elif getLuck(66):
+			unicard(1, i, Global._matsr, 16, Global._matPrice, "Matsr")
+		else:
+			unicard(1, i, Global._matsu, 16, Global._matPrice, "Matsu")
+			pass
+		pass
+		pass
 		Global._xp += 10
 		backbutton()
 		pass
 	if x == 1 :
-		var i = 0
 		unicard(2, i, Global._matu, 100, Global._matPrice, "Matu")
 		backbutton()
 		pass
@@ -63,7 +85,7 @@ func goback():
 	$"../Packs_Inventory".visible = true
 	$"../ShopButton".visible = true
 	#$"../ColorRect".visible = true
-	#$"../Button4".visible = true
+	$"../Card_Inventory".visible = true
 	$"../Packs_Inventory"._pressed()
 	pass
 	
@@ -110,7 +132,7 @@ func getPrice (set, num, foil, x) :
 	else:
 		price.text = "$" + (str(set[num]["nf"]))
 		pass
-	price.position.x = 260 + ((x % 5) * 300) - (price.size.x)
+	price.position.x = 260 + (floor(x % 5) * 300) - (price.size.x)
 	price.position.y = 450 + (floor(x / 5) * 500)
 	add_child(price)
 	pass
@@ -129,7 +151,7 @@ func unicard (amount, i, set, foilchance, priceset, setName) :
 			foil = true
 			packsprite.material = shader_material
 			pass
-		
+		print("I" + str(i))
 		add_child(packsprite)
 		checkItem(setName, foil, choice, priceset, setName)
 		getPrice(priceset, choice, foil, i)

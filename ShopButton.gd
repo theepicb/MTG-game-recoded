@@ -14,7 +14,7 @@ func _pressed():
 	$"../Packs_Inventory".deleteChild()
 	$"../Money_Clicker".visible = false
 	$"../Combo_Counter".visible = false
-	#$"../Packs_Inventory".removeInv()
+	$"../Inventory_handler".removeInv()
 	var x = 0
 	var i = 0
 	while x != totalpacks:

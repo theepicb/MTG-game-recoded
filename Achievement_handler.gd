@@ -26,20 +26,17 @@ func _process(delta):
 var achievemes = ["achievement: you've clicked 10 times, your journey begins", "you leveled up to level " + str(Global._level) + "!"]
 func showach(i):
 	var message = Button.new()
-	message.size.x = 800
-	message.size.y = 40
-	message.position.x = 200
+	message.size.x = get_viewport_rect().size.x
+	message.size.y = 50
+	message.position.x = get_viewport_rect().size.x / 2 - message.size.x / 2 
 	message.position.y = get_viewport_rect().size.y
+	message.text = str(achievemes[i])
 	add_child(message)
-	var label = Label.new()
-	label.position.x = 220
-	label.position.y = get_viewport_rect().size.y + 7
-	add_child(label)
-	label.text = str(achievemes[i])
+
 	var y = 0
 	while y < 33:
 		message.position.y = message.position.y - 3
-		label.position.y = label.position.y - 3
+
 		y = y + 1
 		await get_tree().create_timer(.001).timeout
 		pass
@@ -47,12 +44,12 @@ func showach(i):
 	await get_tree().create_timer(2).timeout
 	while y > 0:
 		message.self_modulate.a = y
-		label.self_modulate.a = y
+
 		await get_tree().create_timer(.02).timeout
 		y = y - .02
 		pass
 	message.self_modulate.a = 0
-	label.self_modulate.a = 0
+
 	for child in $".".get_children():
 		child.queue_free()
 		pass

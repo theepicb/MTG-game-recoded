@@ -9,5 +9,5 @@ func _pressed():
 	$"../ShopButton".deleteChild()
 	$"../Money_Clicker".visible = true
 	$"../Combo_Counter".visible = true
-	#$"../Button4".removeInv()
+	$"../Inventory_handler".removeInv()
 	pass

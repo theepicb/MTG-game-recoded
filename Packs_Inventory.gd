@@ -18,7 +18,7 @@ func _pressed():
 	$"../ShopButton".deleteChild()
 	$"../Money_Clicker".visible = false
 	$"../Combo_Counter".visible = false
-	#$"../Button4".removeInv()
+	$"../Inventory_handler".removeInv()
 	var x = 0
 	var have = 0;
 	for i in range(Global._packsinv.size()):

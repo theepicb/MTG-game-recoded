@@ -30,7 +30,7 @@ func createCard (card, choice) :
 			pass
 		child.position = Vector2(-300, -300)
 		child.name = card.id
-		child.scale = Vector2(0.28, 0.28)
+		child.scale = Vector2(0.29, 0.29)
 		inv.push_back({"name" : card.id, "info": card, "count": 1})
 		add_child(child)
 		print("made child")
@@ -50,9 +50,8 @@ func loadInv() :
 	var loaded
 	for i in range(inv.size()):
 		x_positions.push_back(360 + ((i % 6) * 275))
-		y_positions.push_back(100 + (floor(i / 6) * 500))
+		y_positions.push_back(150 + (floor(i / 6) * 500))
 		pass
-	var cardsprite
 	var stop_condition = inv.size()
 	if (stop_condition > 12) :
 		if (inv.size() > 12 * (screen + 1)) :
@@ -63,22 +62,26 @@ func loadInv() :
 		stop_condition = min(12 * (screen + 1), (inv).size())
 		pass
 	for i in range(stop_condition):
-		cardsprite = Sprite2D.new()
-		cardsprite.position.x = x_positions[i]
-		cardsprite.position.y = y_positions[i]
-		get_node(str(inv[i].name)).position = Vector2(x_positions[i], y_positions[i])
+		get_node(str(inv[i + (screen * 12)].name)).position = Vector2(x_positions[i], y_positions[i])
 		pass
 		
+
 		
+		var price = Label.new();
+		price.position.x = 300 + ((i % 6) * 275)
+		price.position.y = 300 + (floor(i / 6) * 500)
+		price.text = "$" + str(inv[i].info.price)
+		price.add_theme_font_size_override("font_size", 20)
+		add_child(price)
 		
 		var countLabel = Label.new()
 		countLabel.position.x = 400 + ((i % 6) * 275)
-		countLabel.position.y = 220 + (floor(i / 6) * 500)
+		countLabel.position.y = 300 + (floor(i / 6) * 500)
 		countLabel.set_text("x" +  str(inv[i + (screen * 12)]["count"]))
 		countLabel.add_theme_font_size_override("font_size", 20)
 		add_child(countLabel)
 		
-		if ((screen + 1) * 12 < len(Global._inv)) :
+		if ((screen + 1) * 12 < len(inv)) :
 			var forwardButton = Button.new()
 			forwardButton.position = Vector2(120, 200)
 			forwardButton.size = Vector2(50, 40)
@@ -113,13 +116,16 @@ func _back_button_pressed () :
 	
 func removeInv() :
 	for child in $".".get_children():
-		child.position = Vector2(-300, 300)
+		if child.get_class() == "Label" or child.get_class() == "Button":
+			child.queue_free()
+			pass
+		child.position = Vector2(-300, -300)
 		pass
 	pass
 	
 func getPrice (set, num, foil, x) :
 	var price = Label.new()
-	print("set " + str(num))
+
 	if foil == true :
 		price.text = "$" + (str(set[num]["foil"]))
 		print("num: " + str(num))

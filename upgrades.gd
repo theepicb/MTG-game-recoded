@@ -10,11 +10,11 @@ var i = 0
 # Called when the node enters the scene tree for the first time.
 func createButton():
 	deleteChild()
-	#$"../shopButton".deleteschild()
 	$"../Money_Clicker".visible = false
 	$"../Combo_Counter".visible = false
 	$"../ShopButton".deleteChild()
-	#$"../Button4".removeInv()
+	$"../Inventory_handler".removeInv()
+	$"../Packs_Inventory".deleteChild()
 	var x = 0
 	if float(Global._upgradesUnlocked.size()) != 0:
 		while x < float(Global._upgradesUnlocked.size()):
