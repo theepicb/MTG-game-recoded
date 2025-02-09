@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bxe74xwn2cp0l"]
+[gd_scene load_steps=13 format=3 uid="uid://bxe74xwn2cp0l"]
 
 [ext_resource type="Script" path="res://Global.gd" id="1_0iiay"]
 [ext_resource type="Script" path="res://Achievement_handler.gd" id="1_iwyy1"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://Card_Handler.gd" id="9_uw7co"]
 [ext_resource type="Script" path="res://Inventory_handler.gd" id="10_ufuvg"]
 [ext_resource type="Script" path="res://Card_Inventory.gd" id="11_w1fti"]
+[ext_resource type="Script" path="res://card_grabber.gd" id="12_vs50f"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_0iiay")
@@ -68,3 +69,8 @@ script = ExtResource("10_ufuvg")
 offset_right = 8.0
 offset_bottom = 8.0
 script = ExtResource("11_w1fti")
+
+[node name="Card_Grabber" type="Sprite2D" parent="."]
+script = ExtResource("12_vs50f")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]

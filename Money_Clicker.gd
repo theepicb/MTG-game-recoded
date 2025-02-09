@@ -5,9 +5,17 @@ var totalClicks = 0;
 var clicks = 0
 func _ready():
 	size = Vector2(600, 220)
-	getMoney()
+	var timer = Timer.new ()
+	timer.wait_time = 1.0
+	timer.one_shot = false
+	timer.connect("timeout", Callable(self, "_on_Timer_timeout"))
+	add_child(timer)
+	timer.start()
 	pass 
 
+func _on_Timer_timeout () :
+	Global._money  = Global._money + Global._automoney
+	pass
 
 func _pressed():
 	# Math for combo 10 clicks = 1%
@@ -31,12 +39,10 @@ func getMoney():
 	getMoney()
 	pass
 
+
+
 	
 func hidebutton():
 	$".".visible = false
 	pass
 	
-
-
-
-

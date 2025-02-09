@@ -22,7 +22,6 @@ func checkItem(set, foil, choice, priceSet, setName):
 	if foil == true :
 		card.id = str(set) + str(choice) + "f"
 		pass
-	$"../Inventory_handler".createCard(card, choice)
 	
 	pass
 
@@ -160,4 +159,3 @@ func unicard (amount, i, set, foilchance, priceset, setName) :
 		pass
 	
 	pass
-

@@ -2,9 +2,6 @@ extends Sprite2D
 
 var shader_material = preload("res://new_shader_material.tres")
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
 
 func itemPositionWithValue(key_to_check, value_to_check):
 	for i in range(inv.size()):
@@ -138,4 +135,3 @@ func getPrice (set, num, foil, x) :
 	price.add_theme_font_size_override("font_size", 20)
 	add_child(price)
 	pass
-
