@@ -1,6 +1,7 @@
 extends Sprite2D
 
 var shader_material = preload("res://new_shader_material.tres")
+var thread: Thread
 
 func getLuck (chance):
 	return randf_range(0, 100) * Global._luck >= chance
@@ -38,29 +39,29 @@ func openpack(x):
 	if x == 0:
 		Global.dir_contents("res://sprites/motm-e/")
 		
-		unicard(2, i, Global._matu, 0, Global._matPrice, "Matu")
+		unicard(2, i, Global._matu, 0, Global._matPrice, "mat")
 		i = 2
 		if getLuck(66) :
-			unicard(1, i, Global._matr, 0, Global._matPrice, "Matr")
+			unicard(1, i, Global._matr, 0, Global._matPrice, "mat")
 			i = 3
 		else:
-			unicard(1, i, Global._matm, 0, Global._matPrice, "Matm")
+			unicard(1, i, Global._matm, 0, Global._matPrice, "mat")
 			i = 3
 			pass
 		if getLuck(66):
-			unicard(1, i, Global._matm, 100, Global._matPrice, "Matm")
+			unicard(1, i, Global._matm, 100, Global._matPrice, "mat")
 		elif getLuck(66):
-			unicard(1, i, Global._matr, 100, Global._matPrice, "Matr")
+			unicard(1, i, Global._matr, 100, Global._matPrice, "mat")
 		else:
-			unicard(1, i, Global._matu, 100, Global._matPrice, "Matu")
+			unicard(1, i, Global._matu, 100, Global._matPrice, "mat")
 		
 		i = 4
 		if getLuck(66):
-			unicard(1, i, Global._matsm, 16, Global._matPrice, "Matsm")
+			unicard(1, i, Global._matsm, 16, Global._matPrice, "mat")
 		elif getLuck(66):
-			unicard(1, i, Global._matsr, 16, Global._matPrice, "Matsr")
+			unicard(1, i, Global._matsr, 16, Global._matPrice, "mat")
 		else:
-			unicard(1, i, Global._matsu, 16, Global._matPrice, "Matsu")
+			unicard(1, i, Global._matsu, 16, Global._matPrice, "mat")
 			pass
 		pass
 		pass
@@ -68,7 +69,7 @@ func openpack(x):
 		backbutton()
 		pass
 	if x == 1 :
-		unicard(2, i, Global._matu, 100, Global._matPrice, "Matu")
+		unicard(2, i, Global._matu, 100, Global._matPrice, "Mat")
 		backbutton()
 		pass
 		
@@ -115,6 +116,7 @@ func _ready():
 
 	# Set the initial value of the time parameter in the shader
 	material.set_shader_parameter("time", shader_time)
+	thread = Thread.new()
 
 func _process(delta):
 	# Accumulate delta time to update shader time
@@ -144,14 +146,15 @@ func unicard (amount, i, set, foilchance, priceset, setName) :
 		var packsprite = Sprite2D.new()
 		packsprite.texture = load(Global._imageram[choice - 1]) 
 		packsprite.scale = Vector2(0.38, 0.38)
-		packsprite.position.x = 290 + ((i % 5) * 300)
-		packsprite.position.y = 230 + (floor(i / 5) * 500)
+		var posx = 290 + ((i % 5) * 300)
+		var posy = 230 + (floor(i / 5) * 500)
 		if randf_range(1, 100) <= foilchance :
 			foil = true
 			packsprite.material = shader_material
 			pass
 		print("I" + str(i))
-		add_child(packsprite)
+		#add_child(packsprite)
+		thread.start($"../Card_Grabber".create_object(setName, choice, foil, posx, posy))
 		checkItem(setName, foil, choice, priceset, setName)
 		getPrice(priceset, choice, foil, i)
 		x += 1

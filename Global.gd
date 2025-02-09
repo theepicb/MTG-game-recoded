@@ -2,7 +2,7 @@ extends Node2D
 # Holds useful variables and functions
 var _clicksTotal = 0
 # starting money
-var _money = 0
+var _money = 500
 # value per click
 var _moneyClick = 0.01
 # multiplier for each click

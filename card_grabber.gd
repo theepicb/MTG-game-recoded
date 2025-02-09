@@ -15,16 +15,17 @@ func _ready ():
 	material = shader_material
 	material.set_shader_parameter("time", shader_time)
 	$"../HTTPRequest".request_completed.connect(_on_request_completed)
-	create_object("xln", 1, true, 100, 100)
+	#create_object("xln", 2, true, 100, 100)
 	pass
 
 var posxy
 var cardname = ""
 var isfoil = false
-
+signal script_finished
 func create_object(setname, number, foil, posx, posy):
-	posxy = Vector2(posx, posy)
+	posxy = Vector2(100, 100)
 	isfoil = foil
+	print("https://api.scryfall.com/cards/" + str(setname)+ "/" + str(number))
 	$"../HTTPRequest".request("https://api.scryfall.com/cards/" + str(setname)+ "/" + str(number))
 	
 	pass
@@ -48,7 +49,10 @@ func _on_request_completed(result, response_code, headers, body):
 			tempcard.position = posxy
 			tempcard.scale = Vector2(0.27, 0.27)
 			tempcard.name = cardname
+			print(tempcard.position)
 			if isfoil == true:
 				tempcard.material = shader_material
+				pass
+			
 			pass
 	pass
