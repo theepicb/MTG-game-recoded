@@ -70,6 +70,9 @@ func _button_pressed(x, i):
 
 
 func _pressed():
+	if $"../Inventory_handler".script_running:
+		$"../Inventory_handler".stop_function = true
+		pass
 	createButton.call()
 	print(Global._upgradesUnlocked.size(), Global._upgradesUnlocked)
 	text = "upgrades"

@@ -1,7 +1,13 @@
 extends Sprite2D
 
 var shader_material = preload("res://new_shader_material.tres")
-var thread: Thread
+
+func itemPositionWithValue(key_to_check, value_to_check):
+	for i in range(Global._inv.size()):
+		var item = Global._inv[i]
+		if item.has(key_to_check) and item[key_to_check] == value_to_check:
+			return i
+	return -1
 
 func getLuck (chance):
 	return randf_range(0, 100) * Global._luck >= chance
@@ -12,7 +18,8 @@ func checkItem(set, foil, choice, priceSet, setName):
 				"id": str(set) + str(choice),
 				"set": setName,
 				"num": choice,
-				"price": 0
+				"price": 0,
+				"owned": 0
 				}
 	if foil == true:
 		card.price = priceSet[choice].foil
@@ -24,7 +31,7 @@ func checkItem(set, foil, choice, priceSet, setName):
 		card.id = str(set) + str(choice) + "f"
 		pass
 	
-	pass
+	return card
 
 
 
@@ -39,29 +46,29 @@ func openpack(x):
 	if x == 0:
 		Global.dir_contents("res://sprites/motm-e/")
 		
-		unicard(2, i, Global._matu, 0, Global._matPrice, "mat")
+		await unicard(2, i, Global._matu, 0, Global._matPrice, "mat")
 		i = 2
 		if getLuck(66) :
-			unicard(1, i, Global._matr, 0, Global._matPrice, "mat")
+			await unicard(1, i, Global._matr, 0, Global._matPrice, "mat")
 			i = 3
 		else:
-			unicard(1, i, Global._matm, 0, Global._matPrice, "mat")
+			await unicard(1, i, Global._matm, 0, Global._matPrice, "mat")
 			i = 3
 			pass
 		if getLuck(66):
-			unicard(1, i, Global._matm, 100, Global._matPrice, "mat")
+			await unicard(1, i, Global._matm, 100, Global._matPrice, "mat")
 		elif getLuck(66):
-			unicard(1, i, Global._matr, 100, Global._matPrice, "mat")
+			await unicard(1, i, Global._matr, 100, Global._matPrice, "mat")
 		else:
-			unicard(1, i, Global._matu, 100, Global._matPrice, "mat")
+			await unicard(1, i, Global._matu, 100, Global._matPrice, "mat")
 		
 		i = 4
 		if getLuck(66):
-			unicard(1, i, Global._matsm, 16, Global._matPrice, "mat")
+			await unicard(1, i, Global._matsm, 16, Global._matPrice, "mat")
 		elif getLuck(66):
-			unicard(1, i, Global._matsr, 16, Global._matPrice, "mat")
+			await unicard(1, i, Global._matsr, 16, Global._matPrice, "mat")
 		else:
-			unicard(1, i, Global._matsu, 16, Global._matPrice, "mat")
+			await unicard(1, i, Global._matsu, 16, Global._matPrice, "mat")
 			pass
 		pass
 		pass
@@ -69,7 +76,7 @@ func openpack(x):
 		backbutton()
 		pass
 	if x == 1 :
-		unicard(2, i, Global._matu, 100, Global._matPrice, "Mat")
+		unicard(2, i, Global._matu, 100, Global._matPrice, "mat")
 		backbutton()
 		pass
 		
@@ -87,6 +94,7 @@ func goback():
 	#$"../ColorRect".visible = true
 	$"../Card_Inventory".visible = true
 	$"../Packs_Inventory"._pressed()
+	$"../Card_Grabber".deleteChild()
 	pass
 	
 func backbutton ():
@@ -116,7 +124,7 @@ func _ready():
 
 	# Set the initial value of the time parameter in the shader
 	material.set_shader_parameter("time", shader_time)
-	thread = Thread.new()
+	pass
 
 func _process(delta):
 	# Accumulate delta time to update shader time
@@ -133,8 +141,8 @@ func getPrice (set, num, foil, x) :
 	else:
 		price.text = "$" + (str(set[num]["nf"]))
 		pass
-	price.position.x = 260 + (floor(x % 5) * 300) - (price.size.x)
-	price.position.y = 450 + (floor(x / 5) * 500)
+	price.position.x = 230 + (floor(x % 5) * 245) - (price.size.x)
+	price.position.y = 440 + (floor(x / 5) * 350)
 	add_child(price)
 	pass
 	
@@ -142,23 +150,28 @@ func getPrice (set, num, foil, x) :
 func unicard (amount, i, set, foilchance, priceset, setName) :
 	for x in range(amount) :
 		var foil = false
-		var choice = set.pick_random()
-		var packsprite = Sprite2D.new()
-		packsprite.texture = load(Global._imageram[choice - 1]) 
-		packsprite.scale = Vector2(0.38, 0.38)
-		var posx = 290 + ((i % 5) * 300)
-		var posy = 230 + (floor(i / 5) * 500)
 		if randf_range(1, 100) <= foilchance :
 			foil = true
-			packsprite.material = shader_material
 			pass
+		var choice = set.pick_random()
+		var posx = 260 + ((i % 5) * 240)
+		var posy = 230 + (floor(i / 5) * 500)
 		print("I" + str(i))
-		#add_child(packsprite)
-		thread.start($"../Card_Grabber".create_object(setName, choice, foil, posx, posy))
-		checkItem(setName, foil, choice, priceset, setName)
+		$"../Card_Grabber".create_object(setName, choice, foil, posx, posy)
+		await $"../HTTPRequest2".request_completed
+		var card = checkItem(setName, foil, choice, priceset, setName)
+		var cardpos = itemPositionWithValue("id", card.id)
 		getPrice(priceset, choice, foil, i)
+		if cardpos == -1:
+			card.owned = 1
+			Global._inv.push_back(card)
+			pass
+		else:
+			Global._inv[cardpos].owned = Global._inv[cardpos].owned + 1
+			print("item in array")
+			pass
 		x += 1
 		i += 1
 		pass
-	
+	print(Global._inv)
 	pass

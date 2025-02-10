@@ -13,6 +13,9 @@ func _ready():
 var packScale = [.35, 1]
 
 func _pressed():
+	if $"../Inventory_handler".script_running == true:
+		$"../Inventory_handler".stop_function = true
+		pass
 	$".".deleteChild()
 	$"../upgrades".deleteChild()
 	$"../ShopButton".deleteChild()

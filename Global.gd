@@ -1,4 +1,5 @@
 extends Node2D
+var _inv: Array
 # Holds useful variables and functions
 var _clicksTotal = 0
 # starting money

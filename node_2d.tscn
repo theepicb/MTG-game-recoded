@@ -59,18 +59,20 @@ offset_right = 8.0
 offset_bottom = 8.0
 script = ExtResource("8_7qweo")
 
+[node name="Card_Inventory" type="Button" parent="."]
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("11_w1fti")
+
 [node name="Card_Handler" type="Sprite2D" parent="."]
 script = ExtResource("9_uw7co")
 
 [node name="Inventory_handler" type="Sprite2D" parent="."]
 script = ExtResource("10_ufuvg")
 
-[node name="Card_Inventory" type="Button" parent="."]
-offset_right = 8.0
-offset_bottom = 8.0
-script = ExtResource("11_w1fti")
-
 [node name="Card_Grabber" type="Sprite2D" parent="."]
 script = ExtResource("12_vs50f")
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="HTTPRequest2" type="HTTPRequest" parent="."]
