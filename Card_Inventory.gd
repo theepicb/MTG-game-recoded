@@ -15,7 +15,6 @@ func _pressed():
 	$"../Inventory_handler".stop_function = true
 	if $"../Inventory_handler".script_running != true:
 		$"../Inventory_handler".stop_function = false
-		
 		$"../Inventory_handler".loadInv()
 		$"../Money_Clicker".visible = false
 		$"../Combo_Counter".visible = false

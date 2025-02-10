@@ -18,7 +18,7 @@ var _upgradesUnlocked = [1, 2]
 var _autotimer = 0
 var _totalclicks = 0
 var _frame = 0
-# pack handeling
+# pack handeling need to change to dictionary
 var _packsUnlocked = []
 var _packsinv = [0, 0, 0]
 var _packscost = [5, 40]
@@ -30,7 +30,7 @@ var _level = 1
 var _xpToNextLevel = [null, 10, 500]
 # used when grabbing sprite textures
 var _imageram = []
-# assigning rarities, probably a better way of doing this
+# assigning rarities, probably a better way of doing this, need to figure out how to use spreadsheet to make this easier
 var _matu = [1, 3, 7, 8, 12, 13, 14, 17, 19, 20, 25, 27, 28, 30, 31]
 var _matr = [2, 4, 5, 9, 10, 11, 15, 16, 18, 21, 23, 24, 29, 32, 33, 34, 37, 39, 40, 42, 43, 44, 47, 50]
 var _matm = [22, 26, 35, 36, 38, 41, 45, 46, 48, 49]

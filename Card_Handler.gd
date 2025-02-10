@@ -1,7 +1,6 @@
 extends Sprite2D
-
-var shader_material = preload("res://new_shader_material.tres")
-
+# checks to see if an array of dictionaries has a specific key with a specific value,
+# mostly just used to check if inventory already has new items
 func itemPositionWithValue(key_to_check, value_to_check):
 	for i in range(Global._inv.size()):
 		var item = Global._inv[i]
@@ -9,9 +8,11 @@ func itemPositionWithValue(key_to_check, value_to_check):
 			return i
 	return -1
 
+# function that outputs true or false based on chance and increased by global luck multiplier. used for foil or increased rares/mythics ect
 func getLuck (chance):
 	return randf_range(0, 100) * Global._luck >= chance
 
+# kinda a bad name, more of a card data generator for inventory. pretty sure it had different inteded use
 func checkItem(set, foil, choice, priceSet, setName):
 	var card = {
 				"foil": foil,
@@ -34,17 +35,18 @@ func checkItem(set, foil, choice, priceSet, setName):
 	return card
 
 
-
+# yet another kinda janky way to do things, basically unicard is a way to grab any card from an array of numbers. could probably
+# do the setting of (i) better but thats for another day
+# call function goes await unicard((amount of cards to draw from set),(i),(foil chance in %),(price list),(3 letter set code))
+# should possibly move to seperate node as will get quite big after adding more packs
 func openpack(x):
 	$"../Clickscreen".visible = false
 	$"../upgrades".visible = false
 	$"../Packs_Inventory".visible = false
 	$"../ShopButton".visible = false
-	#$"../ColorRect".visible = false
 	$"../Card_Inventory".visible = false
 	var i = 0
 	if x == 0:
-		Global.dir_contents("res://sprites/motm-e/")
 		
 		await unicard(2, i, Global._matu, 0, Global._matPrice, "mat")
 		i = 2
@@ -76,27 +78,15 @@ func openpack(x):
 		backbutton()
 		pass
 	if x == 1 :
-		unicard(2, i, Global._matu, 100, Global._matPrice, "mat")
+		await unicard(2, i, Global._matu, 100, Global._matPrice, "mat")
 		backbutton()
 		pass
 		
 		
 
 
-func goback():
-	for child in $".".get_children():
-		child.queue_free()
-		pass
-	$"../Clickscreen".visible = true
-	$"../upgrades".visible = true
-	$"../Packs_Inventory".visible = true
-	$"../ShopButton".visible = true
-	#$"../ColorRect".visible = true
-	$"../Card_Inventory".visible = true
-	$"../Packs_Inventory"._pressed()
-	$"../Card_Grabber".deleteChild()
-	pass
-	
+
+# creates back button after pack contents is drawn
 func backbutton ():
 		var back = Button.new()
 		var text = Label.new()
@@ -114,26 +104,28 @@ func backbutton ():
 		back.pressed.connect(self.goback)
 		pass
 		
-var shader_time = 0.0
+# functionality for back button
+func goback():
+	for child in $".".get_children():
+		child.queue_free()
+		pass
+	$"../Clickscreen".visible = true
+	$"../upgrades".visible = true
+	$"../Packs_Inventory".visible = true
+	$"../ShopButton".visible = true
+	$"../Card_Inventory".visible = true
+	$"../Packs_Inventory"._pressed()
+	$"../Card_Grabber".deleteChild()
+	pass
 func _ready():
-	material = shader_material
-	# Make sure the Label has a ShaderMaterial
-	if material.shader == null:
-		print("No ShaderMaterial assigned to the Label.")
-		return
 
-	# Set the initial value of the time parameter in the shader
-	material.set_shader_parameter("time", shader_time)
 	pass
 
 func _process(delta):
-	# Accumulate delta time to update shader time
-	shader_time += delta
-	# Update the time uniform in the shader material
-	material.set_shader_parameter("time", shader_time)
-	shader_material = preload("res://new_shader_material.tres")
+
 	pass
-	
+
+# function to make label for card value
 func getPrice (set, num, foil, x) :
 	var price = Label.new()
 	if foil == true :
@@ -142,11 +134,11 @@ func getPrice (set, num, foil, x) :
 		price.text = "$" + (str(set[num]["nf"]))
 		pass
 	price.position.x = 230 + (floor(x % 5) * 245) - (price.size.x)
-	price.position.y = 440 + (floor(x / 5) * 350)
+	price.position.y = 400 + (floor(x / 5) * 350)
 	add_child(price)
 	pass
 	
-
+# function that gets and draws cards, also adds it to inventory
 func unicard (amount, i, set, foilchance, priceset, setName) :
 	for x in range(amount) :
 		var foil = false
@@ -154,12 +146,15 @@ func unicard (amount, i, set, foilchance, priceset, setName) :
 			foil = true
 			pass
 		var choice = set.pick_random()
+		# after 5 cards moves down a y layer
 		var posx = 260 + ((i % 5) * 240)
 		var posy = 230 + (floor(i / 5) * 500)
-		print("I" + str(i))
+		# card grab request from scryfall
 		$"../Card_Grabber".create_object(setName, choice, foil, posx, posy)
 		await $"../HTTPRequest2".request_completed
+		# creates temp variable that will be used to add items to inventory
 		var card = checkItem(setName, foil, choice, priceset, setName)
+		# checks if item is aready in inventory, if it is adds 1 to amount owned (-1 means new card)
 		var cardpos = itemPositionWithValue("id", card.id)
 		getPrice(priceset, choice, foil, i)
 		if cardpos == -1:

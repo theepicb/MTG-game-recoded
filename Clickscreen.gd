@@ -3,6 +3,7 @@ func _ready():
 	size = Vector2(200, 60)
 	position = Vector2(0, 0)
 	pass
+# this is in all main screen buttons, basically just removes everything from other menus
 func _pressed():
 	if $"../Inventory_handler".script_running:
 		$"../Inventory_handler".stop_function = true

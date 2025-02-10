@@ -12,7 +12,7 @@ func _process(_delta):
 	size = Vector2(50, 50)
 	
 	
-	# math for combo, only appliciable over 10 clicks
+	# math for combo, only appliciable over 10 clicks, shouldnt really be here but i am silly :p
 	$"../Money_Clicker".counter = $"../Money_Clicker".counter + 1
 	if $"../Money_Clicker".counter > 60 :
 		$"../Money_Clicker".clicks = 0
