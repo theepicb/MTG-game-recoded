@@ -11,7 +11,9 @@ func itemPositionWithValue(key_to_check, value_to_check):
 # function that outputs true or false based on chance and increased by global luck multiplier. used for foil or increased rares/mythics ect
 func getLuck (chance):
 	return randf_range(0, 100) * Global._luck >= chance
-
+# data grabbed from json file, url is direct url link to png to speed up inventory generation
+var url: String
+var price = 0;
 # kinda a bad name, more of a card data generator for inventory. pretty sure it had different inteded use
 func checkItem(set, foil, choice, priceSet, setName):
 	var card = {
@@ -19,8 +21,9 @@ func checkItem(set, foil, choice, priceSet, setName):
 				"id": str(set) + str(choice),
 				"set": setName,
 				"num": choice,
-				"price": 0,
-				"owned": 0
+				"price": price,
+				"owned": 0,
+				"url": url
 				}
 	if foil == true:
 		card.price = priceSet[choice].foil

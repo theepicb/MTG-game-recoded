@@ -41,13 +41,32 @@ func create_object(setname, number, foil, posx, posy):
 	$"../HTTPRequest".request(url)
 	pass
 
+func create_object_quick(url, foil, posx, posy):
+	isfoil = false
+	posxy = Vector2(posx, posy)
+	if foil == true:
+		isfoil = true
+		pass
+	$"../HTTPRequest2".request(url)
+	
+	pass
+
 func _on_request_completed(result, response_code, headers, body):
 	# headers 1 is json content type 
 	if headers[1] == "Content-Type: application/json; charset=utf-8" :
 		# turns json header into text
 		var json = JSON.parse_string(body.get_string_from_utf8())
+		print(json)
 		# gets name of card
 		cardname = (json["name"])
+		# used to attatch png url from scyfall to card in dictionary to speed up redrawing
+		$"../Card_Handler".url = json["image_uris"].png
+		if isfoil == false:
+			$"../Card_Handler".price = float(json["prices"].usd)
+			pass
+		else:
+			$"../Card_Handler".price = float(json["prices"].usd_foil)
+			pass
 		# gets link to png of card in json file and then does a second request for it
 		$"../HTTPRequest2".request(json["image_uris"].png)
 	pass

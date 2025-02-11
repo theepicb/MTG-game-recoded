@@ -42,7 +42,7 @@ func loadInv() :
 		# creates new label for price
 		var price = Label.new();
 		# sets position from array
-		price.position = Vector2(x_positions[i], y_positions[i])
+		price.position = Vector2(x_positions[i] - 60,170 + y_positions[i])
 		# text and style
 		price.text = "$" + str(Global._inv[i + (screen * 12)].price)
 		price.add_theme_font_size_override("font_size", 20)
@@ -51,7 +51,7 @@ func loadInv() :
 		# the label that tells the player how many of that card is owned
 		var countLabel = Label.new()
 		# takes generated x position and offsets 40 pixels
-		countLabel.position = Vector2(40 + x_positions[i], y_positions[i])
+		countLabel.position = Vector2(60 + x_positions[i], 170 + y_positions[i])
 		# text and style
 		countLabel.set_text("x" +  str(Global._inv[i + (screen * 12)]["owned"]))
 		countLabel.add_theme_font_size_override("font_size", 20)
@@ -64,7 +64,7 @@ func loadInv() :
 			break
 			pass
 		# grabbing card from scryfall
-		$"../Card_Grabber".create_object(Global._inv[i + (screen * 12)]["set"], Global._inv[i + (screen * 12)]["num"], Global._inv[i + (screen * 12)]["foil"], x_positions[i], y_positions[i])
+		$"../Card_Grabber".create_object_quick(Global._inv[i + (screen * 12)]["url"],  Global._inv[i + (screen * 12)]["foil"], x_positions[i], y_positions[i])
 		# waiting for grab from scryfall, causes high lag due to given 
 		# ping with scryfall only fix is  async loading or parallel http requests both dont know how to use
 		await $"../HTTPRequest2".request_completed
