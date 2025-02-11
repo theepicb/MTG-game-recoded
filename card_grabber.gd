@@ -26,9 +26,9 @@ func _ready ():
 
 # sets up variables, not really needed but was more for testing phases, could very easily have them removed and changed in script
 var url
-var posxy
+var posxy = Vector2(0, 0)
 var cardname = ""
-var isfoil = false
+var isfoil = 2
 
 # function called by other nodes wanting to get a card image, scryfalls json file can be called from https://api.scryfall.com/cards/(3 letter set name)/(number in set)
 # need to test what happens with specific cards that have an a, b, c varient ect
@@ -42,11 +42,8 @@ func create_object(setname, number, foil, posx, posy):
 	pass
 
 func create_object_quick(url, foil, posx, posy):
-	isfoil = false
+	isfoil = foil
 	posxy = Vector2(posx, posy)
-	if foil == true:
-		isfoil = true
-		pass
 	$"../HTTPRequest2".request(url)
 	
 	pass
@@ -61,11 +58,13 @@ func _on_request_completed(result, response_code, headers, body):
 		cardname = (json["name"])
 		# used to attatch png url from scyfall to card in dictionary to speed up redrawing
 		$"../Card_Handler".url = json["image_uris"].png
-		if isfoil == false:
+		if isfoil == 0:
 			$"../Card_Handler".price = float(json["prices"].usd)
 			pass
-		else:
+		elif isfoil == 1:
 			$"../Card_Handler".price = float(json["prices"].usd_foil)
+		elif isfoil == 2:
+			$"../Card_Handler".price = float(json["prices"].usd_etched)
 			pass
 		# gets link to png of card in json file and then does a second request for it
 		$"../HTTPRequest2".request(json["image_uris"].png)
@@ -91,7 +90,7 @@ func _on_request_completed2(result, response_code, headers, body):
 		# sets name grabbed from json file
 		tempcard.name = cardname
 		# applies foil shader if wanted
-		if isfoil == true:
+		if isfoil == 1:
 			tempcard.material = shader_material
 			pass
 		add_child(tempcard)

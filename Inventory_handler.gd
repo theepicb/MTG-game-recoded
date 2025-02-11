@@ -5,7 +5,7 @@ var stop_function = false
 
 # tracks what page of inventory player is on
 var screen = 0
-
+var inv_length = 10
 # function to load inventory from card_Inventory
 func loadInv() :
 	# removes inventory before redrawing on canvas
@@ -16,22 +16,22 @@ func loadInv() :
 	
 	#function to generate x and y positions, should probably just make this an array that generates on ready
 	for i in range(Global._inv.size()):
-		x_positions.push_back(360 + ((i % 6) * 220))
-		y_positions.push_back(150 + (floor(i / 6) * 350))
+		x_positions.push_back(360 + ((i % (inv_length / 2)) * 220))
+		y_positions.push_back(150 + (floor(i / (inv_length / 2) * 350)))
 		pass
 	
 	# functions to tell inventory how many cards to draw and from which starting point
 	var stop_condition = Global._inv.size()
 	
 	# checks to see if inventory is larger than 12 items multiplied which page of inventory your on
-	if (stop_condition > 12) :
-		if (Global._inv.size() > 12 * (screen + 1)) :
-			stop_condition = 12
+	if (stop_condition > inv_length) :
+		if (Global._inv.size() > inv_length * (screen + 1)) :
+			stop_condition = inv_length
 		else:
 			# if you are on last page gives remainder of cards left
-			stop_condition = stop_condition % 12
+			stop_condition = stop_condition % inv_length
 	else:
-		stop_condition = min(12 * (screen + 1), Global._inv.size())
+		stop_condition = min(inv_length * (screen + 1), Global._inv.size())
 		pass
 	# main loop for generation cards grabs them off scyfall so ping is issue
 	# also have issue of player spamming inventory button making weird results so have temp work around but need to revise
@@ -44,7 +44,7 @@ func loadInv() :
 		# sets position from array
 		price.position = Vector2(x_positions[i] - 60,170 + y_positions[i])
 		# text and style
-		price.text = "$" + str(Global._inv[i + (screen * 12)].price)
+		price.text = "$" + str(Global._inv[i + (screen * inv_length)].price)
 		price.add_theme_font_size_override("font_size", 20)
 		add_child(price)
 		
@@ -53,7 +53,7 @@ func loadInv() :
 		# takes generated x position and offsets 40 pixels
 		countLabel.position = Vector2(60 + x_positions[i], 170 + y_positions[i])
 		# text and style
-		countLabel.set_text("x" +  str(Global._inv[i + (screen * 12)]["owned"]))
+		countLabel.set_text("x" +  str(Global._inv[i + (screen * inv_length)]["owned"]))
 		countLabel.add_theme_font_size_override("font_size", 20)
 		add_child(countLabel)
 		
@@ -71,7 +71,7 @@ func loadInv() :
 		pass
 	# checks to see if inventory is bigger than 12 multiplied by what screen youre currently on
 	# if so brings up "next" button, redrawn every time inventory is loaded
-	if ((screen + 1) * 12 < len(Global._inv)):
+	if ((screen + 1) * inv_length < len(Global._inv)):
 		var forwardButton = Button.new()
 		forwardButton.position = Vector2(120, 200)
 		forwardButton.size = Vector2(50, 40)

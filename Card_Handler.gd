@@ -15,7 +15,7 @@ func getLuck (chance):
 var url: String
 var price = 0;
 # kinda a bad name, more of a card data generator for inventory. pretty sure it had different inteded use
-func checkItem(set, foil, choice, priceSet, setName):
+func checkItem(set, foil, choice, setName):
 	var card = {
 				"foil": foil,
 				"id": str(set) + str(choice),
@@ -25,15 +25,15 @@ func checkItem(set, foil, choice, priceSet, setName):
 				"owned": 0,
 				"url": url
 				}
-	if foil == true:
-		card.price = priceSet[choice].foil
-	else:
-			card.price = priceSet[choice].nf
-			pass
+	
 	print(card.set)
-	if foil == true :
+	if foil == 1 :
 		card.id = str(set) + str(choice) + "f"
 		pass
+	elif foil == 2:
+		card.id = str(set) + str(choice) + "ef"
+		pass
+	
 	
 	return card
 
@@ -51,29 +51,29 @@ func openpack(x):
 	var i = 0
 	if x == 0:
 		
-		await unicard(2, i, Global._matu, 0, Global._matPrice, "mat")
+		await unicard(2, i, Global._matu, 0, "mat")
 		i = 2
 		if getLuck(66) :
-			await unicard(1, i, Global._matr, 0, Global._matPrice, "mat")
+			await unicard(1, i, Global._matr, 0, "mat")
 			i = 3
 		else:
-			await unicard(1, i, Global._matm, 0, Global._matPrice, "mat")
+			await unicard(1, i, Global._matm, 0, "mat")
 			i = 3
 			pass
 		if getLuck(66):
-			await unicard(1, i, Global._matm, 100, Global._matPrice, "mat")
+			await unicard(1, i, Global._matm, 100, "mat")
 		elif getLuck(66):
-			await unicard(1, i, Global._matr, 100, Global._matPrice, "mat")
+			await unicard(1, i, Global._matr, 100, "mat")
 		else:
-			await unicard(1, i, Global._matu, 100, Global._matPrice, "mat")
+			await unicard(1, i, Global._matu, 100, "mat")
 		
 		i = 4
 		if getLuck(66):
-			await unicard(1, i, Global._matsm, 16, Global._matPrice, "mat")
+			await unicard(1, i, Global._matsm, 16, "mat")
 		elif getLuck(66):
-			await unicard(1, i, Global._matsr, 16, Global._matPrice, "mat")
+			await unicard(1, i, Global._matsr, 16, "mat")
 		else:
-			await unicard(1, i, Global._matsu, 16, Global._matPrice, "mat")
+			await unicard(1, i, Global._matsu, 16, "mat")
 			pass
 		pass
 		pass
@@ -81,7 +81,9 @@ func openpack(x):
 		backbutton()
 		pass
 	if x == 1 :
-		await unicard(2, i, Global._matu, 100, Global._matPrice, "mat")
+		await unicard(2, i, Global._matu, 100,  "mat")
+		i = 2
+		await unicard(1, i, Global._mateu, -1, "mat")
 		backbutton()
 		pass
 		
@@ -129,24 +131,23 @@ func _process(delta):
 	pass
 
 # function to make label for card value
-func getPrice (set, num, foil, x) :
-	var price = Label.new()
-	if foil == true :
-		price.text = "$" + (str(set[num]["foil"]))
-	else:
-		price.text = "$" + (str(set[num]["nf"]))
-		pass
-	price.position.x = 230 + (floor(x % 5) * 245) - (price.size.x)
-	price.position.y = 400 + (floor(x / 5) * 350)
-	add_child(price)
+func getPrice (x) :
+	var priceLabel = Label.new()
+	priceLabel.text = "$" + str(price)
+	priceLabel.position.x = 230 + (floor(x % 5) * 245) - (priceLabel.size.x)
+	priceLabel.position.y = 400 + (floor(x / 5) * 350)
+	add_child(priceLabel)
 	pass
 	
 # function that gets and draws cards, also adds it to inventory
-func unicard (amount, i, set, foilchance, priceset, setName) :
+func unicard (amount, i, set, foilchance, setName) :
 	for x in range(amount) :
-		var foil = false
-		if randf_range(1, 100) <= foilchance :
-			foil = true
+		var foil = 0
+		if foilchance == -1 :
+			foil = 3
+			pass
+		elif randf_range(1, 100) <= foilchance :
+			foil = 1
 			pass
 		var choice = set.pick_random()
 		# after 5 cards moves down a y layer
@@ -156,10 +157,10 @@ func unicard (amount, i, set, foilchance, priceset, setName) :
 		$"../Card_Grabber".create_object(setName, choice, foil, posx, posy)
 		await $"../HTTPRequest2".request_completed
 		# creates temp variable that will be used to add items to inventory
-		var card = checkItem(setName, foil, choice, priceset, setName)
+		var card = checkItem(setName, foil, choice, setName)
 		# checks if item is aready in inventory, if it is adds 1 to amount owned (-1 means new card)
 		var cardpos = itemPositionWithValue("id", card.id)
-		getPrice(priceset, choice, foil, i)
+		getPrice(i)
 		if cardpos == -1:
 			card.owned = 1
 			Global._inv.push_back(card)
