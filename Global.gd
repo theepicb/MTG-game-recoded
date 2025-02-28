@@ -40,34 +40,19 @@ var _matsm = [72, 76, 85, 86, 88, 91, 95, 96, 98, 99]
 var _mateu = [101, 103, 107, 108, 112, 113, 114, 117, 119, 120, 125, 127, 128, 130, 131]
 var _mater = [102, 104, 105, 106, 109, 110, 111, 115, 116, 118, 121, 123, 124, 129, 132, 133, 134, 137, 139, 140, 142, 143, 144, 147, 150]
 var _matem = [122, 126, 135, 136, 138, 141, 145, 146, 148, 149]
+var _matexr = [151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 163, 164, 166, 167, ]
 # ways of increasing odds/adding extra cards to packs
 var _luck = 1
 var _addChance = 0
+
+var _cardFiles = []
 
 # Level up function to be added
 func _levelUp(x) :
 	
 	pass
 
-# Function to load all of a packs names into an array
-func dir_contents(path):
-	_imageram.clear()
-	_imageram.push_front(null)
-	var dir = DirAccess.open(path)
-	if dir:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if file_name.get_extension() == "png":
-				_imageram.push_back(str(path) + str(file_name))
-			file_name = dir.get_next()
-			pass
-		_imageram.sort()
-		
-	else:
-		print("An error occurred when trying to access the path.")
-		pass
 
 func _ready():
-
+	
 	pass

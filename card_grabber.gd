@@ -29,6 +29,7 @@ var url
 var posxy = Vector2(0, 0)
 var cardname = ""
 var isfoil = 2
+var cardID
 
 # function called by other nodes wanting to get a card image, scryfalls json file can be called from https://api.scryfall.com/cards/(3 letter set name)/(number in set)
 # need to test what happens with specific cards that have an a, b, c varient ect
@@ -36,9 +37,12 @@ var isfoil = 2
 func create_object(setname, number, foil, posx, posy):
 	posxy = Vector2(posx, posy)
 	isfoil = foil
+	cardID = createID(str(setname), str(number), foil)
 	# url maker
 	url = ("https://api.scryfall.com/cards/" + str(setname)+ "/" + str(number))
 	$"../HTTPRequest".request(url)
+	dir_contents("res://sprites/cards/")
+	
 	pass
 
 func create_object_quick(url, foil, posx, posy):
@@ -86,7 +90,7 @@ func _on_request_completed2(result, response_code, headers, body):
 		tempcard.texture = texture;
 		# sets pos and scale 
 		tempcard.position = posxy
-		tempcard.scale = Vector2(0.27, 0.27)
+		tempcard.scale = Vector2(0.33, 0.33)
 		# sets name grabbed from json file
 		tempcard.name = cardname
 		# applies foil shader if wanted
@@ -94,7 +98,9 @@ func _on_request_completed2(result, response_code, headers, body):
 			tempcard.material = shader_material
 			pass
 		add_child(tempcard)
+		image.save_png("res://sprites/cards/" + str(cardID))
 		pass
+	
 	pass
 
 # function to delete of children from this node
@@ -102,3 +108,33 @@ func deleteChild():
 	for child in $".".get_children():
 			child.queue_free()
 	pass
+	
+func dir_contents(path):
+	var dir = DirAccess.open(path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir():
+				print("Found directory: " + file_name)
+			else:
+				print("Found file: " + file_name)
+				if not Global._cardFiles.has(str(file_name)) :
+					Global._cardFiles.push_back(String(file_name))
+					pass
+			file_name = dir.get_next()
+	else:
+		print("An error occurred when trying to access the path.")
+		pass
+	print(Global._cardFiles)
+
+func createID (set, num, foil):
+	var foiling = ""
+	if foil == 1:
+		foiling = "f"
+	elif foil == 2:
+		foiling = "ef"
+		pass
+	var cardID = str(set) + str(num) + foiling
+	return cardID
+	

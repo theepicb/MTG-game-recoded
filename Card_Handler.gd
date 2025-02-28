@@ -33,6 +33,10 @@ func checkItem(set, foil, choice, setName):
 	elif foil == 2:
 		card.id = str(set) + str(choice) + "ef"
 		pass
+	elif foil == 3 :
+		card.id = str(set) + str(choice) + "hf"
+		pass
+	
 	
 	
 	return card
@@ -81,8 +85,8 @@ func openpack(x):
 		backbutton()
 		pass
 	if x == 1 :
-		await unicard(2, i, Global._matu, 100,  "mat")
-		i = 2
+		await unicard(5, i, Global._matu, 100,  "mat")
+		i = 5
 		await unicard(1, i, Global._mateu, -1, "mat")
 		backbutton()
 		pass
@@ -97,7 +101,7 @@ func backbutton ():
 		var text = Label.new()
 
 		var posx = get_viewport_rect().size.x
-		var position_y = 500
+		var position_y = 950
 
 		back.size = Vector2(140, 60)
 		back.position = Vector2((posx - back.size.x) / 2, position_y)
@@ -134,7 +138,7 @@ func _process(delta):
 func getPrice (x) :
 	var priceLabel = Label.new()
 	priceLabel.text = "$" + str(price)
-	priceLabel.position.x = 230 + (floor(x % 5) * 245) - (priceLabel.size.x)
+	priceLabel.position.x = 230 + (floor(x % 5) * 270) - (priceLabel.size.x)
 	priceLabel.position.y = 400 + (floor(x / 5) * 350)
 	add_child(priceLabel)
 	pass
@@ -144,6 +148,9 @@ func unicard (amount, i, set, foilchance, setName) :
 	for x in range(amount) :
 		var foil = 0
 		if foilchance == -1 :
+			foil = 2
+			pass
+		elif foilchance == -2 :
 			foil = 3
 			pass
 		elif randf_range(1, 100) <= foilchance :
@@ -151,7 +158,7 @@ func unicard (amount, i, set, foilchance, setName) :
 			pass
 		var choice = set.pick_random()
 		# after 5 cards moves down a y layer
-		var posx = 260 + ((i % 5) * 240)
+		var posx = 260 + ((i % 5) * 270)
 		var posy = 230 + (floor(i / 5) * 500)
 		# card grab request from scryfall
 		$"../Card_Grabber".create_object(setName, choice, foil, posx, posy)

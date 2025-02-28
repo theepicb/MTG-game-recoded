@@ -17,7 +17,7 @@ func loadInv() :
 	#function to generate x and y positions, should probably just make this an array that generates on ready
 	for i in range(Global._inv.size()):
 		x_positions.push_back(360 + ((i % (inv_length / 2)) * 220))
-		y_positions.push_back(150 + (floor(i / (inv_length / 2) * 350)))
+		y_positions.push_back(150 + (floor(i / (inv_length / 2) * 360)))
 		pass
 	
 	# functions to tell inventory how many cards to draw and from which starting point
